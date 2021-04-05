@@ -1,0 +1,36 @@
+{
+    "name": "scarbous/mr_template",
+    "type": "typo3-cms-extension",
+    "description": "Adds the functionality to use a configuration file for TS-Config and TypoScript in your template-extension.",
+    "support": {
+        "issues": "https://github.com/Scarbous/mr_template/issues"
+    },
+    "keywords": [
+        "TYPO3",
+        "extension",
+        "template"
+    ],
+    "authors": [
+        {
+            "name": "Sascha heilmeier",
+            "role": "Developer"
+        }
+    ],
+    "version": "0.1.0",
+    "require": {
+        "typo3/cms-core": "^10.4.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Scarbous\\MrTemplate\\": "Classes"
+        }
+    },
+    "replace": {
+        "typo3-ter/mr_template": "self.version"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "mr_template"
+        }
+    }
+}

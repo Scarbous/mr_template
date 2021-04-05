@@ -1,0 +1,7 @@
+label: Mr.Template Base
+typoScript:
+  - EXT:mr_template/Configuration/TypoScript/Page
+  - EXT:mr_template/Configuration/TypoScript/BackendLayoutBodyClass
+  - EXT:mr_template/Configuration/TypoScript/Config
+tsConfig:
+  - Scarbous\MrTemplate\Template\Entity\BackendLayouts

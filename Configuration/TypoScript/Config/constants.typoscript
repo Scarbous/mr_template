@@ -1,0 +1,18 @@
+# customcategory=mr_template=MR.Template
+# customsubcategory=base_config=Base-Config
+# customsubcategory=optimization_config=Optimization-Config
+# customsubcategory=seo_config=SEO-Config
+
+plugin.mr_template {
+    # cat=mr_template/base_config/10; type=boolean; label=TYPO3 NoCaching
+    caching = 1
+
+    # cat=mr_template/optimization_config/10; type=boolean; label=JS Concateant
+    concatenateJs = 0
+    # cat=mr_template/optimization_config/20; type=boolean; label=CSS Concateant
+    concatenateCss = 0
+    # cat=mr_template/optimization_config/30; type=boolean; label=JS Compression
+    compressJs = 0
+    # cat=mr_template/optimization_config/40; type=boolean; label=CSS Compression
+    compressCss = 0
+}

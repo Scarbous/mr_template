@@ -1,0 +1,15 @@
+config {
+    no_cache = {$plugin.mr_template.caching}
+    absRefPrefix = auto
+    renderCharset = utf-8
+    metaCharset = utf-8
+    doctype = html5
+    uniqueLinkVars = 1
+    pageTitleFirst = 1
+    linkVars = L
+    disablePrefixComment = 1
+    compressJs = {$plugin.mr_template.compressJs}
+    compressCss = {$plugin.mr_template.compressCss}
+    concatenateJs = {$plugin.mr_template.concatenateJs}
+    concatenateCss = {$plugin.mr_template.concatenateCss}
+}

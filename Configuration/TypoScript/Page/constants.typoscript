@@ -1,0 +1,20 @@
+# customcategory=mr_template=MR.Template
+# customsubcategory=base_config=Base-Config
+# customsubcategory=seo_config=SEO-Config
+
+plugin.mr_template {
+
+    # cat=mr_template/base_config/10; type=string; label=Meta Robots
+    layoutRootPath = EXT:template_extension/Resources/Private/Layouts/Page/
+    # cat=mr_template/base_config/20; type=string; label=Meta Robots
+    partialRootPath = EXT:template_extension/Resources/Private/Partials/Page/
+    # cat=mr_template/base_config/30; type=string; label=Meta Robots
+    templateRootPath = EXT:template_extension/Resources/Private/Templates/Page/
+
+    meta {
+        # cat=mr_template/seo_config/10; type=string; label=Meta Robots
+        robots = NOINDEX,FOLLOW
+        # cat=mr_template/base_config/100; type=string; label=Meta Viewport
+        viewport = width=device-width, initial-scale=1
+    }
+}

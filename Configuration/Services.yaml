@@ -1,0 +1,6 @@
+services:
+    Scarbous\MrTemplate\EventListener\AddTemplateTsConfig:
+        tags:
+            - name: event.listener
+              identifier: 'mrTemplateTsConfig'
+              event: TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent

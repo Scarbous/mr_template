@@ -1,0 +1,28 @@
+page {
+    bodyTag >
+    bodyTagCObject  = COA
+    bodyTagCObject   {
+
+        10 = TEXT
+        10.field = uid
+        10.wrap = id="|"
+
+        20 = COA
+        20 {
+            wrap = class="|"
+            10 = TEXT
+            10 {
+                data = pagelayout
+                required = 1
+                case = lower
+                split {
+                    token = pagets__
+                    cObjNum = 1
+                    1.current = 1
+                }
+                noTrimWrap = |page-| |
+            }
+        }
+        wrap = <body |>
+    }
+}
