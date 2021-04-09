@@ -44,11 +44,8 @@ class TableConfigurationPostProcessor implements SingletonInterface
             return;
         }
 
-        if ( ! (
-            isset($params['row']['include_static_file'])
-            || is_array($params['row']['include_static_file'])
-        )) {
-            $params['row']['include_static_file'] = [];
+        if ( ! isset($params['row']['include_static_file']) ) {
+            $params['row']['include_static_file'] = '';
         }
 
         $backupStaticFiles = GeneralUtility::trimExplode(',', $params['row']['include_static_file']);

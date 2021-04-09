@@ -68,8 +68,8 @@ class AddTemplateTsConfig
      */
     private function getHeader(string $title): string
     {
-        return str_repeat('#', strlen($title) + 10) . LF .
+        return LF . str_repeat('#', strlen($title) + 10) . LF .
                '##### ' . $title . ' #####' . LF .
-               str_repeat('#', strlen($title) + 10);
+               str_repeat('#', strlen($title) + 10). LF;
     }
 }
