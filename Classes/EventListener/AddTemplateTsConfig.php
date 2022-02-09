@@ -2,7 +2,6 @@
 
 namespace Scarbous\MrTemplate\EventListener;
 
-use Scarbous\MrTemplate\Template\Entity\Template;
 use Scarbous\MrTemplate\Template\TemplateFinder;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

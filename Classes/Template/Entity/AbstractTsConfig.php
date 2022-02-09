@@ -4,7 +4,6 @@ namespace Scarbous\MrTemplate\Template\Entity;
 
 abstract class AbstractTsConfig implements TsConfigInterface
 {
-
     /**
      * @inheritDoc
      */

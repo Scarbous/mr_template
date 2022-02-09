@@ -8,13 +8,13 @@ $EM_CONF[$_EXTKEY] = [
     'author_email'     => 'sheilmeier@gmail.com',
     'state'            => 'beta',
     'clearCacheOnLoad' => true,
-    'version'          => '0.1.1',
+    'version'          => '1.0.0',
     'uploadfolder'     => false,
     'constraints'      => [
         'depends'   => [
-            'typo3' => '10.4.0-10.4.99',
+            'typo3' => '10.4.0-11.5.99',
         ],
         'conflicts' => [],
         'suggests'  => [],
-    ],
+    ]
 ];

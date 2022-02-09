@@ -2,7 +2,6 @@
 
 namespace Scarbous\MrTemplate\Template\Entity;
 
-use Scarbous\MrTemplate\Template\Entity\Template;
 
 interface TsConfigInterface
 {

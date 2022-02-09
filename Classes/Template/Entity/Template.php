@@ -42,14 +42,15 @@ class Template
      */
     function __construct(
         string $identifier,
-        array $configuration
-    ) {
+        array  $configuration
+    )
+    {
         $this->identifier = $identifier;
 
         foreach (
             [
-                'label'      => 'label',
-                'parent'     => 'parent',
+                'label' => 'label',
+                'parent' => 'parent',
                 'typoScript' => 'typoScript',
                 'extensions' => 'extensions'
             ] as $confKey => $var
@@ -83,7 +84,7 @@ class Template
      */
     public function getExKey(): string
     {
-        [$extKey] = explode('/', $this->getIdentifier());
+        [$extKey] = explode('/', $this->getIdentifier(),1);
 
         return $extKey;
     }
@@ -93,7 +94,7 @@ class Template
      *
      * @return Template
      */
-    public function setIdentifier(string $identifier): Template
+    public function setIdentifier(string $identifier): self
     {
         $this->identifier = $identifier;
 
@@ -113,7 +114,7 @@ class Template
      *
      * @return Template
      */
-    public function setLabel(string $label): Template
+    public function setLabel(string $label): self
     {
         $this->label = $label;
 
@@ -133,7 +134,7 @@ class Template
      *
      * @return Template
      */
-    public function setParent(?string $parent): Template
+    public function setParent(?string $parent): self
     {
         $this->parent = $parent;
 
@@ -153,7 +154,7 @@ class Template
      *
      * @return Template
      */
-    public function setTypoScript(array $typoScript): Template
+    public function setTypoScript(array $typoScript): self
     {
         $this->typoScript = $typoScript;
 
@@ -173,7 +174,7 @@ class Template
      *
      * @return Template
      */
-    public function setExtensions(array $extensions): Template
+    public function setExtensions(array $extensions): self
     {
         $this->extensions = $extensions;
 
@@ -193,7 +194,7 @@ class Template
      *
      * @return Template
      */
-    public function setTsConfig(array $tsConfig): Template
+    public function setTsConfig(array $tsConfig): self
     {
         $this->tsConfig = $tsConfig;
 

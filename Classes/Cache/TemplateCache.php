@@ -23,7 +23,8 @@ class TemplateCache implements SingletonInterface
      */
     function __construct(
         CacheManager $cacheManager = null
-    ) {
+    )
+    {
         $this->cacheManager = $cacheManager ?? GeneralUtility::makeInstance(CacheManager::class);
     }
 
@@ -53,7 +54,7 @@ class TemplateCache implements SingletonInterface
     /**
      * @param array $data
      *
-     * @return $this
+     * @return bool
      */
     function set(array $data): bool
     {
@@ -63,7 +64,6 @@ class TemplateCache implements SingletonInterface
         } catch (\Exception $e) {
             return false;
         }
-
         return true;
     }
 }

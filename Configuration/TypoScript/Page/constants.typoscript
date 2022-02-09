@@ -5,11 +5,11 @@
 plugin.mr_template {
 
     # cat=mr_template/base_config/10; type=string; label=Meta Robots
-    layoutRootPath = EXT:template_extension/Resources/Private/Layouts/Page/
+    layoutRootPath = EXT:mr_template/Resources/Private/Layouts/Page/
     # cat=mr_template/base_config/20; type=string; label=Meta Robots
-    partialRootPath = EXT:template_extension/Resources/Private/Partials/Page/
+    partialRootPath = EXT:mr_template/Resources/Private/Partials/Page/
     # cat=mr_template/base_config/30; type=string; label=Meta Robots
-    templateRootPath = EXT:template_extension/Resources/Private/Templates/Page/
+    templateRootPath = EXT:mr_template/Resources/Private/Templates/Page/
 
     meta {
         # cat=mr_template/seo_config/10; type=string; label=Meta Robots
