@@ -16,26 +16,47 @@
             "role": "Developer"
         }
     ],
-    "config": {
-        "preferred-install": "dist"
-    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": "^7.2.0",
         "typo3/cms-core": "^10 || ^11.1@dev || dev-master"
     },
+    "require-dev": {
+        "typo3/testing-framework": "*"
+    },
     "autoload": {
         "psr-4": {
             "Scarbous\\MrTemplate\\": "Classes"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Scarbous\\MrTemplate\\Tests\\": "Tests"
+        }
+    },
     "replace": {
         "typo3-ter/mr_template": "self.version"
     },
+    "scripts": {
+        "post-autoload-dump": [
+            "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+        ]
+    },
     "extra": {
         "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/Web",
             "extension-key": "mr_template"
+        }
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin",
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
         }
     }
 }
