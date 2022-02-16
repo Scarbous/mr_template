@@ -1,6 +1,14 @@
 services:
-    Scarbous\MrTemplate\EventListener\AddTemplateTsConfig:
-        tags:
-            - name: event.listener
-              identifier: 'mrTemplateTsConfig'
-              event: TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Scarbous\MrTemplate\:
+    resource: '../Classes/*'
+
+  Scarbous\MrTemplate\EventListener\AddTemplateTsConfig:
+    tags:
+      - name: event.listener
+        identifier: 'mrTemplateTsConfig'
+        event: TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent
