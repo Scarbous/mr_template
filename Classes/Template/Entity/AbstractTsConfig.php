@@ -9,6 +9,6 @@ abstract class AbstractTsConfig implements TsConfigInterface
      */
     public function getHeader(): string
     {
-        return self::class;
+        return static::class;
     }
 }
