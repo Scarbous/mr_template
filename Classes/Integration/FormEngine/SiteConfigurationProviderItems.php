@@ -13,28 +13,32 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SiteConfigurationProviderItems
 {
     /**
-     * @param array $tca
-     * @param TcaSelectItems $bar
-     *
-     * @return array
+     * @var TemplateFinder
      */
-    public function processTemplateItems(array $tca, TcaSelectItems $bar): array
-    {
-        foreach ($this->getTemplateFinder()->getAllTemplates() as $template) {
-            $tca['items'][] = [
-                $template->getLabel(),
-                $template->getIdentifier()
-            ];
-        }
+    protected $templateFinder;
 
-        return $tca;
+    function __construct()
+    {
+        $this->templateFinder = GeneralUtility::makeInstance(TemplateFinder::class);
     }
 
     /**
-     * @return TemplateFinder
+     * @param array $params
+     * @param TcaSelectItems $tcaSelectItems
+     *
+     * @return void
      */
-    protected function getTemplateFinder(): TemplateFinder
+    public function processTemplateItems(array &$params, TcaSelectItems $tcaSelectItems): void
     {
-        return GeneralUtility::makeInstance(TemplateFinder::class);
+        foreach ($this->templateFinder->getAllTemplates() as $template) {
+            $params['itemGroups'][$template->getExKey()] = 'EXT:' . $template->getExKey();
+            $params['items'][] = [
+                $template->getLabel(),
+                $template->getIdentifier(),
+                $template->getIcon(),
+                $template->getExKey()
+            ];
+        }
     }
+
 }

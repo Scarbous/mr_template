@@ -2,7 +2,7 @@
 
 namespace Scarbous\MrTemplate\Template\Entity;
 
-class Template
+class Template implements TemplateInterface
 {
     /**
      * @var string
@@ -30,6 +30,11 @@ class Template
     protected $extensions = [];
 
     /**
+     * @var null|string
+     */
+    protected $icon = null;
+
+    /**
      * @var TsConfigInterface[]
      */
     protected $tsConfig = [];
@@ -52,7 +57,8 @@ class Template
                 'label' => 'label',
                 'parent' => 'parent',
                 'typoScript' => 'typoScript',
-                'extensions' => 'extensions'
+                'extensions' => 'extensions',
+                'icon' => 'icon'
             ] as $confKey => $var
         ) {
             if (isset($configuration[$confKey])) {
@@ -72,7 +78,7 @@ class Template
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getIdentifier(): string
     {
@@ -80,29 +86,17 @@ class Template
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getExKey(): string
     {
-        [$extKey] = explode('/', $this->getIdentifier(),1);
+        [$extKey] = explode('/', $this->getIdentifier(), 2);
 
         return $extKey;
     }
 
     /**
-     * @param string $identifier
-     *
-     * @return Template
-     */
-    public function setIdentifier(string $identifier): self
-    {
-        $this->identifier = $identifier;
-
-        return $this;
-    }
-
-    /**
-     * @return string
+     * @inheritDoc
      */
     public function getLabel(): string
     {
@@ -110,19 +104,15 @@ class Template
     }
 
     /**
-     * @param string $label
-     *
-     * @return Template
+     * @inheritDoc
      */
-    public function setLabel(string $label): self
+    public function getIcon(): string
     {
-        $this->label = $label;
-
-        return $this;
+        return $this->icon ?? "EXT:mr_template/Resources/Public/Icons/Extension.svg";
     }
 
     /**
-     * @return string|null
+     * @inheritDoc
      */
     public function getParent(): ?string
     {
@@ -130,19 +120,7 @@ class Template
     }
 
     /**
-     * @param string|null $parent
-     *
-     * @return Template
-     */
-    public function setParent(?string $parent): self
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * @return string[]
+     * @inheritDoc
      */
     public function getTypoScript(): array
     {
@@ -150,19 +128,7 @@ class Template
     }
 
     /**
-     * @param string[] $typoScript
-     *
-     * @return Template
-     */
-    public function setTypoScript(array $typoScript): self
-    {
-        $this->typoScript = $typoScript;
-
-        return $this;
-    }
-
-    /**
-     * @return string[]
+     * @inheritDoc
      */
     public function getExtensions(): array
     {
@@ -170,34 +136,10 @@ class Template
     }
 
     /**
-     * @param string[] $extensions
-     *
-     * @return Template
-     */
-    public function setExtensions(array $extensions): self
-    {
-        $this->extensions = $extensions;
-
-        return $this;
-    }
-
-    /**
-     * @return TsConfigInterface[]
+     * @inheritDoc
      */
     public function getTsConfig(): array
     {
         return $this->tsConfig;
-    }
-
-    /**
-     * @param TsConfigInterface[] $tsConfig
-     *
-     * @return Template
-     */
-    public function setTsConfig(array $tsConfig): self
-    {
-        $this->tsConfig = $tsConfig;
-
-        return $this;
     }
 }
