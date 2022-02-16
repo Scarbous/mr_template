@@ -20,38 +20,32 @@ class TableConfigurationPostProcessor implements SingletonInterface
     /**
      * TableConfigurationPostProcessor constructor.
      *
-     * @param TemplateFinder|null $templateFinder
+     * @param TemplateFinder $templateFinder
      */
     function __construct(
-        TemplateFinder $templateFinder = null
-    ) {
-        $this->templateFinder = $templateFinder ?? GeneralUtility::makeInstance(TemplateFinder::class);
+        TemplateFinder $templateFinder
+    )
+    {
+        $this->templateFinder = $templateFinder;
     }
 
     /**
      * Includes TypoScript from Template
      *
      * @param array $params Hook parameter
-     *
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
-    public function includeStaticTypoScriptSources(array $params): void
+    public function includeStaticTypoScriptSources(array &$params): void
     {
-        if ( ! (isset($params['row']['root']) && $params['row']['root'] === 1)) {
+        if (
+            ($params['row']['root'] ?? 0) != 1
+            ||
+            !($template = $this->templateFinder->getTemplateByRootPageId($params['row']['uid']))
+        ) {
             return;
         }
-        if ( ! ($template = $this->templateFinder->getTemplateByRootPageId($params['row']['uid']))) {
-            return;
-        }
-
-        if ( ! isset($params['row']['include_static_file']) ) {
-            $params['row']['include_static_file'] = '';
-        }
-
-        $backupStaticFiles = GeneralUtility::trimExplode(',', $params['row']['include_static_file']);
 
         $extensionStaticFiles = [];
-        $staticFiles          = [];
+        $staticFiles = [];
         foreach ($this->templateFinder->getParentTemplates($template) as $template) {
             $staticFiles = array_merge($staticFiles, $template->getTypoScript());
             foreach ($template->getExtensions() as $extension) {
@@ -61,7 +55,7 @@ class TableConfigurationPostProcessor implements SingletonInterface
 
         $params['row']['include_static_file'] =
             implode(',', array_unique(array_merge(
-                    $backupStaticFiles,
+                    GeneralUtility::trimExplode(',', $params['row']['include_static_file'] ?? ''),
                     $staticFiles,
                     $extensionStaticFiles,
                     ['EXT:' . $template->getExKey() . '/Configuration/TypoScript']

@@ -5,7 +5,6 @@ namespace Scarbous\MrTemplate\Cache;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TemplateCache implements SingletonInterface
 {
@@ -19,13 +18,13 @@ class TemplateCache implements SingletonInterface
     /**
      * TemplateCache constructor.
      *
-     * @param CacheManager|null $cacheManager
+     * @param CacheManager $cacheManager
      */
     function __construct(
-        CacheManager $cacheManager = null
+        CacheManager $cacheManager
     )
     {
-        $this->cacheManager = $cacheManager ?? GeneralUtility::makeInstance(CacheManager::class);
+        $this->cacheManager = $cacheManager;
     }
 
     /**
@@ -59,8 +58,10 @@ class TemplateCache implements SingletonInterface
     function set(array $data): bool
     {
         try {
-            $value = 'return ' . var_export($data, true) . ';';
-            $this->getCache()->set(self::IDENTIFIER, $value);
+            $this->getCache()->set(
+                self::IDENTIFIER,
+                "return unserialize('" . serialize($data) . "');"
+            );
         } catch (\Exception $e) {
             return false;
         }

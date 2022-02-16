@@ -4,7 +4,6 @@ namespace Scarbous\MrTemplate\EventListener;
 
 use Scarbous\MrTemplate\Template\TemplateFinder;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class AddTemplateTsConfig
@@ -20,12 +19,12 @@ class AddTemplateTsConfig
     /**
      * TableConfigurationPostProcessor constructor.
      *
-     * @param TemplateFinder|null $templateFinder
+     * @param TemplateFinder $templateFinder
      */
     function __construct(
-        TemplateFinder $templateFinder = null
+        TemplateFinder $templateFinder
     ) {
-        $this->templateFinder = $templateFinder ?? GeneralUtility::makeInstance(TemplateFinder::class);
+        $this->templateFinder = $templateFinder;
     }
 
     /**
@@ -54,7 +53,7 @@ class AddTemplateTsConfig
 
             $tsConfig = $event->getTsConfig();
 
-            $tsConfig['page_' . $page['uid']] .= implode("\n", $allTsConfigs);
+            $tsConfig['page_' . $page['uid']] .= implode(LF, $allTsConfigs);
 
             $event->setTsConfig($tsConfig);
         }
