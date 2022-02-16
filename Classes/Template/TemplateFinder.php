@@ -5,24 +5,16 @@ namespace Scarbous\MrTemplate\Template;
 use Scarbous\MrTemplate\Configuration\TemplateConfiguration;
 use Scarbous\MrTemplate\Template\Entity\Template;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class TemplateFinder implements SingletonInterface
+class TemplateFinder implements TemplateFinderInterface
 {
     /**
      * @var Template
      */
     protected $templates = [];
-
-    /**
-     * Short-hand to quickly fetch a site based on a rootPageId
-     *
-     * @var array
-     */
-    protected $mappingRootPageIdToIdentifier = [];
 
     /**
      * @var TemplateConfiguration
@@ -37,22 +29,21 @@ class TemplateFinder implements SingletonInterface
     /**
      * TemplateFinder constructor.
      *
-     * @param TemplateConfiguration|null $templateConfiguration
-     * @param SiteFinder|null $siteFinder
+     * @param TemplateConfiguration $templateConfiguration
+     * @param SiteFinder $siteFinder
      */
     function __construct(
-        TemplateConfiguration $templateConfiguration = null,
-        SiteFinder $siteFinder = null
-    ) {
-        $this->siteFinder            = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
-        $this->templateConfiguration = $templateConfiguration ?? GeneralUtility::makeInstance(TemplateConfiguration::class);
+        TemplateConfiguration $templateConfiguration,
+        SiteFinder            $siteFinder
+    )
+    {
+        $this->siteFinder = $siteFinder;
+        $this->templateConfiguration = $templateConfiguration;
         $this->fetchAllTemplates();
     }
 
     /**
-     * @param bool $useCache
-     *
-     * @return Template[]
+     * @inheritDoc
      */
     public function getAllTemplates(bool $useCache = true): array
     {
@@ -66,21 +57,13 @@ class TemplateFinder implements SingletonInterface
     /**
      * @param bool $useCache
      */
-    public function fetchAllTemplates(bool $useCache = true): void
+    private function fetchAllTemplates(bool $useCache = true): void
     {
         $this->templates = $this->templateConfiguration->getAllExistingTemplates($useCache);
-
-        foreach ($this->siteFinder->getAllSites($useCache) as $identifier => $site) {
-            if ($template = $this->getTemplateBySite($site)) {
-                $this->mappingRootPageIdToIdentifier[$site->getRootPageId()] = $template->getIdentifier();
-            }
-        }
     }
 
     /**
-     * @param Site $site
-     *
-     * @return Template|null
+     * @inheritDoc
      */
     public function getTemplateBySite(Site $site): ?Template
     {
@@ -90,15 +73,12 @@ class TemplateFinder implements SingletonInterface
     }
 
     /**
-     * @param int $rootPageId
-     *
-     * @return Template|null
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     * @inheritDoc
      */
     public function getTemplateByRootPageId(int $rootPageId): ?Template
     {
         $config = $this->getTemplateConfigByRootPage($rootPageId);
-        if ( ! isset($config['template'])) {
+        if (!isset($config['template'])) {
             return null;
         }
 
@@ -106,13 +86,11 @@ class TemplateFinder implements SingletonInterface
     }
 
     /**
-     * @param string $identifier
-     *
-     * @return Template|null
+     * @inheritDoc
      */
     public function getTemplateByIdentifier(string $identifier): ?Template
     {
-        return ($identifier && key_exists($identifier, $this->templates)) ? $this->templates[$identifier] : null;
+        return $this->templates[$identifier] ?? null;
     }
 
     /**
@@ -120,7 +98,7 @@ class TemplateFinder implements SingletonInterface
      *
      * @return array
      */
-    public function getTemplateConfigByRootPage(int $rootPageId): array
+    private function getTemplateConfigByRootPage(int $rootPageId): array
     {
         try {
             $site = $this->siteFinder->getSiteByRootPageId($rootPageId);
@@ -132,9 +110,7 @@ class TemplateFinder implements SingletonInterface
     }
 
     /**
-     * @param Site $site
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getTemplateConfigBySite(Site $site): array
     {
@@ -144,28 +120,17 @@ class TemplateFinder implements SingletonInterface
     }
 
     /**
-     * @param Template|null $template
-     *
-     * @return Template[]
+     * @inheritDoc
      */
-    public function getParentTemplates(?Template $template): array
+    public function getParentTemplates(Template $template): array
     {
         $templates = [$template];
         while ($template->getParent()) {
             if ($template = $this->getTemplateByIdentifier($template->getParent())) {
                 $templates[] = $template;
             }
-
         }
 
         return array_reverse($templates);
-    }
-
-    /**
-     * @return $this
-     */
-    static function getInstance(): self
-    {
-        return GeneralUtility::makeInstance(self::class);
     }
 }
