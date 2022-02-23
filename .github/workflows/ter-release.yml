@@ -18,15 +18,21 @@ jobs:
       TYPO3_API_PASSWORD: ${{ secrets.TYPO3_API_PASSWORD }}
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Grab new version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      - name: Configure PHP
+
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
           extensions: intl, mbstring, xml, soap, zip, curl
+
       - name: Install TYPO3 Tailor Extension
         run: composer global require typo3/tailor --prefer-dist --no-progress --no-suggest
+
       - name: Release EXT:${{ env.TYPO3_EXTENSION_KEY }} as ${{ steps.get_version.outputs.VERSION }} to TER
-        run: php ~/.composer/vendor/bin/tailor ter:publish ${{ steps.get_version.outputs.VERSION }} --path=./ --comment="Successfully release new version ${{ steps.get_version.outputs.VERSION }} - see changelog at ${{ env.TYPO3_REPOSITORY_URL }}"
+        run: php ~/.composer/vendor/bin/tailor ter:publish ${{ steps.get_version.outputs.VERSION }} --path="${GITHUB_WORKSPACE}" --comment="Successfully release new version ${{ steps.get_version.outputs.VERSION }} - see changelog at ${{ env.TYPO3_REPOSITORY_URL }}"
