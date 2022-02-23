@@ -1,13 +1,15 @@
 <?php
 
-namespace Scarbous\MrTemplate\Tests\Template\Entity;
+namespace Scarbous\MrTemplate\Tests\Unit\Template\Entity;
 
 use Scarbous\MrTemplate\Template\Entity\Template;
 use Scarbous\MrTemplate\Template\Entity\TsConfig;
-use TYPO3\TestingFramework\Core\BaseTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class TsConfigTest extends BaseTestCase
+class TsConfigTest extends UnitTestCase
 {
+    use AbstractTsConfigTrait;
+
     const TS_CONFIG_FILE_PATH = 'EXT:mr_template/Configuration/TsConfig/Test.tsconfig';
 
     /**
@@ -15,10 +17,6 @@ class TsConfigTest extends BaseTestCase
      */
     private $template;
 
-    /**
-     * @var TsConfig
-     */
-    private $tsConfig;
 
     /**
      * @return void
@@ -28,7 +26,6 @@ class TsConfigTest extends BaseTestCase
         parent::setUp();
 
         $this->template = $this->getAccessibleMock(Template::class, [], [], '', false, false);
-
         $this->tsConfig = new TsConfig(self::TS_CONFIG_FILE_PATH);
     }
 
@@ -53,7 +50,7 @@ class TsConfigTest extends BaseTestCase
     public function testGetTsConfig(): void
     {
         self::assertSame(
-            file_get_contents(__DIR__ . '/../../../../Configuration/TsConfig/Test.tsconfig'),
+            '<INCLUDE_TYPOSCRIPT: source="DIR:EXT:mr_template/Configuration/TsConfig/Test.tsconfig">',
             $this->tsConfig->getTsConfig($this->template, [])
         );
     }

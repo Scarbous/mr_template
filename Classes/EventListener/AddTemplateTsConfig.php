@@ -4,6 +4,10 @@ namespace Scarbous\MrTemplate\EventListener;
 
 use Scarbous\MrTemplate\Template\TemplateFinder;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class AddTemplateTsConfig
@@ -23,8 +27,9 @@ class AddTemplateTsConfig
      */
     function __construct(
         TemplateFinder $templateFinder
-    ) {
-        $this->templateFinder = $templateFinder;
+    )
+    {
+        $this->templateFinder = $templateFinder ?? GeneralUtility::makeInstance(TemplateFinder::class);
     }
 
     /**
@@ -35,39 +40,22 @@ class AddTemplateTsConfig
     public function __invoke(ModifyLoadedPageTsConfigEvent $event): void
     {
         foreach ($event->getRootLine() as $page) {
-            if (
-                ! $page['is_siteroot']
-                || ! ($template = $this->templateFinder->getTemplateByRootPageId($page['uid']))
-            ) {
+            if (!$page['is_siteroot']) {
                 continue;
             }
 
-            $allTsConfigs = [];
-
-            foreach ($this->templateFinder->getParentTemplates($template) as $template) {
-                foreach ($template->getTsConfig() as $tsConfig) {
-                    $allTsConfigs[] = $this->getHeader($tsConfig->getHeader())
-                                      . $tsConfig->getTsConfig($template, $page);
-                }
+            try {
+                /** @var Site $site */
+                $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId(($page['uid'] ?? 0));
+            } catch (SiteNotFoundException $e) {
+                continue;
             }
 
+            $template = $this->templateFinder->getTemplateBySite($site);
+
             $tsConfig = $event->getTsConfig();
-
-            $tsConfig['page_' . $page['uid']] .= implode(LF, $allTsConfigs);
-
+            $tsConfig['page_' . $page['uid']] .= $template->getPageTsConfig($page);
             $event->setTsConfig($tsConfig);
         }
-    }
-
-    /**
-     * @param string $title
-     *
-     * @return string
-     */
-    private function getHeader(string $title): string
-    {
-        return LF . str_repeat('#', strlen($title) + 10) . LF .
-               '##### ' . $title . ' #####' . LF .
-               str_repeat('#', strlen($title) + 10). LF;
     }
 }

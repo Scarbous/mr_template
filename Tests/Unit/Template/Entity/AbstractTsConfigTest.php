@@ -1,20 +1,24 @@
 <?php
 
-namespace Scarbous\MrTemplate\Tests\Template\Entity;
+namespace Scarbous\MrTemplate\Tests\Unit\Template\Entity;
 
 use Scarbous\MrTemplate\Template\Entity\AbstractTsConfig;
-use TYPO3\TestingFramework\Core\BaseTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class AbstractTsConfigTest extends BaseTestCase
+class AbstractTsConfigTest extends UnitTestCase
 {
+    use AbstractTsConfigTrait;
+
     /**
-     * @return void
+     * @var AbstractTsConfig
      */
-    public function setup(): void
+    protected $abstractTsConfig = null;
+
+    function setUp(): void
     {
         parent::setUp();
 
-        $this->abstractTsConfig = $this->getAccessibleMockForAbstractClass(AbstractTsConfig::class, ['getHeader'], '', false, false);
+        $this->tsConfig = $this->getAccessibleMockForAbstractClass(AbstractTsConfig::class, ['getHeader'], '', false, false);
     }
 
     /**
@@ -25,8 +29,8 @@ class AbstractTsConfigTest extends BaseTestCase
     public function testGetHeader(): void
     {
         self::assertSame(
-            $this->abstractTsConfig->getHeader(),
-            get_class($this->abstractTsConfig)
+            get_class($this->tsConfig),
+            $this->tsConfig->getHeader()
         );
     }
 }

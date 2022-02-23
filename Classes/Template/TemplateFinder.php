@@ -4,15 +4,13 @@ namespace Scarbous\MrTemplate\Template;
 
 use Scarbous\MrTemplate\Configuration\TemplateConfiguration;
 use Scarbous\MrTemplate\Template\Entity\Template;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TemplateFinder implements TemplateFinderInterface
 {
     /**
-     * @var Template
+     * @var Template[]
      */
     protected $templates = [];
 
@@ -22,23 +20,15 @@ class TemplateFinder implements TemplateFinderInterface
     protected $templateConfiguration;
 
     /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
-
-    /**
      * TemplateFinder constructor.
      *
      * @param TemplateConfiguration $templateConfiguration
-     * @param SiteFinder $siteFinder
      */
     function __construct(
-        TemplateConfiguration $templateConfiguration,
-        SiteFinder            $siteFinder
+        TemplateConfiguration $templateConfiguration
     )
     {
-        $this->siteFinder = $siteFinder;
-        $this->templateConfiguration = $templateConfiguration;
+        $this->templateConfiguration = $templateConfiguration ?? GeneralUtility::makeInstance(TemplateConfiguration::class);
         $this->fetchAllTemplates();
     }
 
@@ -75,15 +65,15 @@ class TemplateFinder implements TemplateFinderInterface
     /**
      * @inheritDoc
      */
-    public function getTemplateByRootPageId(int $rootPageId): ?Template
-    {
-        $config = $this->getTemplateConfigByRootPage($rootPageId);
-        if (!isset($config['template'])) {
-            return null;
-        }
-
-        return $this->getTemplateByIdentifier($config['template']);
-    }
+//    public function getTemplateByRootPageId(int $rootPageId): ?Template
+//    {
+//        $config = $this->getTemplateConfigByRootPage($rootPageId);
+//        if (!isset($config['template'])) {
+//            return null;
+//        }
+//
+//        return $this->getTemplateByIdentifier($config['template']);
+//    }
 
     /**
      * @inheritDoc
@@ -98,16 +88,16 @@ class TemplateFinder implements TemplateFinderInterface
      *
      * @return array
      */
-    private function getTemplateConfigByRootPage(int $rootPageId): array
-    {
-        try {
-            $site = $this->siteFinder->getSiteByRootPageId($rootPageId);
-        } catch (SiteNotFoundException $e) {
-            return [];
-        }
-
-        return $this->getTemplateConfigBySite($site);
-    }
+//    private function getTemplateConfigByRootPage(int $rootPageId): array
+//    {
+//        try {
+//            $site = $this->siteFinder->getSiteByRootPageId($rootPageId);
+//        } catch (SiteNotFoundException $e) {
+//            return [];
+//        }
+//
+//        return $this->getTemplateConfigBySite($site);
+//    }
 
     /**
      * @inheritDoc

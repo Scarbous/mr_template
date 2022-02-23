@@ -1,6 +1,8 @@
 Mr.Template 
 =========
 
+#.Build/bin/phpunit -c Build/UnitTests.xml
+
 ## What does it do?
 
 EXT:mr_template helps you to organize your TypoScript and TSConfig in your Template-Extension.

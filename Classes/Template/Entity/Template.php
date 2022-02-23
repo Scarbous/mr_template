@@ -2,6 +2,9 @@
 
 namespace Scarbous\MrTemplate\Template\Entity;
 
+use Scarbous\MrTemplate\Template\TemplateFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class Template implements TemplateInterface
 {
     /**
@@ -38,6 +41,11 @@ class Template implements TemplateInterface
      * @var TsConfigInterface[]
      */
     protected $tsConfig = [];
+
+    /**
+     * @var TemplateFinder
+     */
+    protected $_templateFinder;
 
     /**
      * Template constructor.
@@ -122,9 +130,38 @@ class Template implements TemplateInterface
     /**
      * @inheritDoc
      */
+    public function getParentTemplate(): ?Template
+    {
+        return $this->getParent() ? $this->getTemplateFinder()->getTemplateByIdentifier($this->getParent()) : null;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getTypoScript(): array
     {
         return $this->typoScript;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTypoScriptStaticFiles(): array
+    {
+        $parent = $this;
+        $extension = [];
+        $staticFiles = [];
+        $templates = [];
+
+        do {
+            $templates[] = 'EXT:' . $parent->getExKey() . '/Configuration/TypoScript';
+            $staticFiles = array_merge($staticFiles, $parent->getTypoScript());
+            foreach ($parent->getExtensions() as $extKey) {
+                $extension[] = sprintf('EXT:%s/Extensions/%s/Configuration/TypoScript', $parent->getExKey(), $extKey);
+            }
+        } while ($parent = $parent->getParentTemplate());
+
+        return array_merge($extension, $staticFiles, $templates);
     }
 
     /**
@@ -141,5 +178,30 @@ class Template implements TemplateInterface
     public function getTsConfig(): array
     {
         return $this->tsConfig;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPageTsConfig(array $page): string
+    {
+        $parent = $this;
+        $allTsConfigs = [];
+
+        do {
+            foreach ($parent->getTsConfig() as $tsConfig) {
+                $allTsConfigs[] = $tsConfig->getHeader(true) . $tsConfig->getTsConfig($parent, $page);
+            }
+        } while ($parent = $parent->getParentTemplate());
+
+        return implode(LF, $allTsConfigs);
+    }
+
+    /**
+     * @return TemplateFinder
+     */
+    private function getTemplateFinder(): TemplateFinder
+    {
+        return $this->_templateFinder = $this->_templateFinder ?: GeneralUtility::makeInstance(TemplateFinder::class);
     }
 }

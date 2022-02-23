@@ -31,9 +31,19 @@ interface TemplateInterface
     public function getParent(): ?string;
 
     /**
+     * @return Template|null
+     */
+    public function getParentTemplate(): ?Template;
+
+    /**
      * @return string[]
      */
     public function getTypoScript(): array;
+
+    /**
+     * @return string[]
+     */
+    public function getTypoScriptStaticFiles(): array;
 
     /**
      * @return string[]
@@ -44,4 +54,10 @@ interface TemplateInterface
      * @return TsConfigInterface[]
      */
     public function getTsConfig(): array;
+
+    /**
+     * @param array $page
+     * @return string
+     */
+    public function getPageTsConfig(array $page): string;
 }

@@ -3,8 +3,11 @@
 namespace Scarbous\MrTemplate\Integration\HookSubscribers;
 
 use Scarbous\MrTemplate\Template\TemplateFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class TableConfigurationPostProcessor
@@ -26,7 +29,7 @@ class TableConfigurationPostProcessor implements SingletonInterface
         TemplateFinder $templateFinder
     )
     {
-        $this->templateFinder = $templateFinder;
+        $this->templateFinder = $templateFinder ?? GeneralUtility::makeInstance(TemplateFinder::class);
     }
 
     /**
@@ -36,30 +39,18 @@ class TableConfigurationPostProcessor implements SingletonInterface
      */
     public function includeStaticTypoScriptSources(array &$params): void
     {
-        if (
-            ($params['row']['root'] ?? 0) != 1
-            ||
-            !($template = $this->templateFinder->getTemplateByRootPageId($params['row']['uid']))
-        ) {
+        try {
+            /** @var Site $site */
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId(($params['row']['root'] ?? 0));
+        } catch (SiteNotFoundException $e) {
             return;
         }
 
-        $extensionStaticFiles = [];
-        $staticFiles = [];
-        foreach ($this->templateFinder->getParentTemplates($template) as $template) {
-            $staticFiles = array_merge($staticFiles, $template->getTypoScript());
-            foreach ($template->getExtensions() as $extension) {
-                $extensionStaticFiles[] = 'EXT:' . $template->getExKey() . '/Extensions/' . $extension . '/Configuration/TypoScript';
-            }
-        }
+        $template = $this->templateFinder->getTemplateBySite($site);
 
-        $params['row']['include_static_file'] =
-            implode(',', array_unique(array_merge(
-                    GeneralUtility::trimExplode(',', $params['row']['include_static_file'] ?? ''),
-                    $staticFiles,
-                    $extensionStaticFiles,
-                    ['EXT:' . $template->getExKey() . '/Configuration/TypoScript']
-                )
-            ));
+        $params['row']['include_static_file'] = implode(',', array_unique(array_merge(
+            GeneralUtility::trimExplode(',', $params['row']['include_static_file'] ?? ''),
+            $template->getTypoScript()
+        )));
     }
 }
