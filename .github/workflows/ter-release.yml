@@ -29,6 +29,4 @@ jobs:
       - name: Install TYPO3 Tailor Extension
         run: composer global require typo3/tailor --prefer-dist --no-progress --no-suggest
       - name: Release EXT:${{ env.TYPO3_EXTENSION_KEY }} as ${{ steps.get_version.outputs.VERSION }} to TER
-        run: |
-          php ~/.composer/vendor/bin/tailor ter:publish ${{ steps.get_version.outputs.VERSION }} \
-            --comment="Successfully release new version ${{ steps.get_version.outputs.VERSION }} - see changelog at ${{ env.TYPO3_REPOSITORY_URL }}"
+        run: php ~/.composer/vendor/bin/tailor ter:publish ${{ steps.get_version.outputs.VERSION }} --path=./ --comment="Successfully release new version ${{ steps.get_version.outputs.VERSION }} - see changelog at ${{ env.TYPO3_REPOSITORY_URL }}"
