@@ -1,7 +1,7 @@
 Mr.Template 
 =========
 
-#.Build/bin/phpunit -c Build/UnitTests.xml
+[![CI](https://github.com/Scarbous/mr_template/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Scarbous/mr_template/actions/workflows/ci.yml)
 
 ## What does it do?
 

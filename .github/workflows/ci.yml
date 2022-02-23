@@ -28,7 +28,6 @@ jobs:
         with:
           php-version: ${{ matrix.env.php }}
           tools: composer
-          extensions: pdo, sqlite3
 
       # composer
       - name: Update Composer
@@ -49,7 +48,7 @@ jobs:
           composer config minimum-stability dev
           composer config prefer-stable true
       - name: Install TYPO3 core
-        run: composer require typo3/cms-core="${TYPO3_VERSION}" ${PREFER_LOWEST};
+        run: composer require typo3/cms-core="${TYPO3_VERSION}";
 
         # unit tests
       - name: Unit Tests
