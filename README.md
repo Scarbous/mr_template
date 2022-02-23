@@ -1,6 +1,8 @@
 Mr.Template 
 =========
 
+[![CI](https://github.com/Scarbous/mr_template/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Scarbous/mr_template/actions/workflows/ci.yml)
+
 ## What does it do?
 
 EXT:mr_template helps you to organize your TypoScript and TSConfig in your Template-Extension.

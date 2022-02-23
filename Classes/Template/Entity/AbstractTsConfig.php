@@ -7,8 +7,19 @@ abstract class AbstractTsConfig implements TsConfigInterface
     /**
      * @inheritDoc
      */
-    public function getHeader(): string
+    public function getHeader(bool $comment = false): string
     {
-        return static::class;
+        return $comment ? $this->wrapHeader(static::class) : static::class;
+    }
+
+    /**
+     * @param string $header
+     * @return string
+     */
+    protected function wrapHeader(string $header): string
+    {
+        return LF . str_repeat('#', strlen($header) + 10) . LF .
+            '##### ' . $header . ' #####' . LF .
+            str_repeat('#', strlen($header) + 10) . LF;
     }
 }

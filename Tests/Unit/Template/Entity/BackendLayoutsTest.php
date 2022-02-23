@@ -4,9 +4,9 @@ namespace Scarbous\MrTemplate\Tests\Template\Entity;
 
 use Scarbous\MrTemplate\Template\Entity\BackendLayouts;
 use Scarbous\MrTemplate\Template\Entity\Template;
-use TYPO3\TestingFramework\Core\BaseTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-class BackendLayoutsTest extends BaseTestCase
+class BackendLayoutsTest extends UnitTestCase
 {
     const TEMPLATE_IDENTIFIER = 'mr_template/base';
 

@@ -12,7 +12,7 @@ class TsConfig extends AbstractTsConfig implements TsConfigInterface
      */
     protected $path;
 
-    function __construct($path)
+    function __construct(string $path)
     {
         $this->path = $path;
     }
@@ -20,9 +20,9 @@ class TsConfig extends AbstractTsConfig implements TsConfigInterface
     /**
      * @inheritDoc
      */
-    function getHeader(): string
+    function getHeader(bool $comment = false): string
     {
-        return $this->path;
+        return $comment ? $this->wrapHeader($this->path) : $this->path;
     }
 
     /**
@@ -42,11 +42,13 @@ class TsConfig extends AbstractTsConfig implements TsConfigInterface
             && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
             && (string)$includeTsConfigFilename !== ''
         ) {
-            $extensionPath              = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey);
+            $extensionPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey);
             $includeTsConfigFileAndPath = PathUtility::getCanonicalPath($extensionPath . $includeTsConfigFilename);
-            if (strpos($includeTsConfigFileAndPath,
-                    $extensionPath) === 0 && file_exists($includeTsConfigFileAndPath)) {
-                return file_get_contents($includeTsConfigFileAndPath);
+            if (
+                strpos($includeTsConfigFileAndPath, $extensionPath) === 0
+                && file_exists($includeTsConfigFileAndPath)
+            ) {
+                return sprintf('<INCLUDE_TYPOSCRIPT: source="DIR:%s">',$this->path);
             }
         }
 

@@ -19,11 +19,11 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.2.0",
-        "typo3/cms-core": "^10 || ^11.1@dev || dev-master"
+        "php": "^7.3 || ^8.0",
+        "typo3/cms-core": "^10.4 || ^11"
     },
     "require-dev": {
-        "typo3/testing-framework": "*"
+        "typo3/testing-framework": "6.15"
     },
     "autoload": {
         "psr-4": {

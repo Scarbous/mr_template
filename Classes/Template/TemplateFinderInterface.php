@@ -21,13 +21,6 @@ interface TemplateFinderInterface extends SingletonInterface
     public function getTemplateBySite(Site $site): ?Template;
 
     /**
-     * @param int $rootPageId
-     *
-     * @return Template|null
-     */
-    public function getTemplateByRootPageId(int $rootPageId): ?Template;
-
-    /**
      * @param string $identifier
      *
      * @return Template|null
