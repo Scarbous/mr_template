@@ -154,14 +154,18 @@ class Template implements TemplateInterface
         $templates = [];
 
         do {
-            $templates[] = 'EXT:' . $parent->getExKey() . '/Configuration/TypoScript';
-            $staticFiles = array_merge($staticFiles, $parent->getTypoScript());
-            foreach ($parent->getExtensions() as $extKey) {
-                $extension[] = sprintf('EXT:%s/Extensions/%s/Configuration/TypoScript', $parent->getExKey(), $extKey);
-            }
+            $templates = array_merge(['EXT:' . $parent->getExKey() . '/Configuration/TypoScript'], $templates);
+            $staticFiles = array_merge($parent->getTypoScript(), $staticFiles);
+            $extension = array_merge(
+                array_map(function ($extKey) use ($parent) {
+                    return sprintf('EXT:%s/Extensions/%s/Configuration/TypoScript', $parent->getExKey(), $extKey);
+                }, $parent->getExtensions()),
+                $extension
+            );
+
         } while ($parent = $parent->getParentTemplate());
 
-        return array_merge($extension, $staticFiles, $templates);
+        return array_merge($staticFiles, $extension, $templates);
     }
 
     /**

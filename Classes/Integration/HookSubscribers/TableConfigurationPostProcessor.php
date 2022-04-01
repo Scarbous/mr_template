@@ -50,7 +50,7 @@ class TableConfigurationPostProcessor implements SingletonInterface
 
         $params['row']['include_static_file'] = implode(',', array_unique(array_merge(
             GeneralUtility::trimExplode(',', $params['row']['include_static_file'] ?? ''),
-            $template->getTypoScript()
+            $template->getTypoScriptStaticFiles()
         )));
     }
 }
