@@ -17,9 +17,9 @@ class TemplateTest extends UnitTestCase
     {
         self::assertSame(
             [
-                'EXT:mr_template/Extensions/news/Configuration/TypoScript',
                 'EXT:mr_template/Configuration/TypoScript/Page',
                 'EXT:mr_template/Configuration/TypoScript/Config',
+                'EXT:mr_template/Extensions/news/Configuration/TypoScript',
                 'EXT:mr_template/Configuration/TypoScript'
             ],
             $this->getTemplate()->getTypoScriptStaticFiles()
