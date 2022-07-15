@@ -48,7 +48,7 @@ class TsConfig extends AbstractTsConfig implements TsConfigInterface
                 strpos($includeTsConfigFileAndPath, $extensionPath) === 0
                 && file_exists($includeTsConfigFileAndPath)
             ) {
-                return sprintf('<INCLUDE_TYPOSCRIPT: source="DIR:%s">',$this->path);
+                return sprintf("@import '%s'",$this->path);
             }
         }
 
