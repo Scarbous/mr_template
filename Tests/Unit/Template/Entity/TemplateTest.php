@@ -38,8 +38,8 @@ class TemplateTest extends UnitTestCase
         }));
 
         self::assertSame(
-            '<INCLUDE_TYPOSCRIPT: source="DIR:EXT:mr_template/Configuration/TsConfig/Test.tsconfig">' . LF
-            . '<INCLUDE_TYPOSCRIPT: source="DIR:EXT:mr_template/Configuration/TsConfig/Page/Mod/WebLayout/BackendLayouts" extensions="tsconfig">',
+            "@import 'EXT:mr_template/Configuration/TsConfig/Test.tsconfig'" . LF
+            . "@import 'EXT:mr_template/Configuration/TsConfig/Page/Mod/WebLayout/BackendLayouts'",
             $config
         );
     }

@@ -50,7 +50,7 @@ class TsConfigTest extends UnitTestCase
     public function testGetTsConfig(): void
     {
         self::assertSame(
-            '<INCLUDE_TYPOSCRIPT: source="DIR:EXT:mr_template/Configuration/TsConfig/Test.tsconfig">',
+            "@import 'EXT:mr_template/Configuration/TsConfig/Test.tsconfig'",
             $this->tsConfig->getTsConfig($this->template, [])
         );
     }

@@ -40,7 +40,7 @@ class BackendLayoutsTest extends UnitTestCase
     public function testGetTsConfig(): void
     {
         self::assertSame(
-            '<INCLUDE_TYPOSCRIPT: source="DIR:EXT:mr_template/Configuration/TsConfig/Page/Mod/WebLayout/BackendLayouts" extensions="tsconfig">',
+            "@import 'EXT:mr_template/Configuration/TsConfig/Page/Mod/WebLayout/BackendLayouts'",
             $this->backendLayouts->getTsConfig($this->template, [])
         );
     }
