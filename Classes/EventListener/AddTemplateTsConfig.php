@@ -53,6 +53,10 @@ class AddTemplateTsConfig
 
             $template = $this->templateFinder->getTemplateBySite($site);
 
+            if (!$template) {
+                continue;
+            }
+
             $tsConfig = $event->getTsConfig();
             $tsConfig['page_' . $page['uid']] .= $template->getPageTsConfig($page);
             $event->setTsConfig($tsConfig);

@@ -48,6 +48,10 @@ class TableConfigurationPostProcessor implements SingletonInterface
 
         $template = $this->templateFinder->getTemplateBySite($site);
 
+        if (!$template) {
+            return;
+        }
+
         $params['row']['include_static_file'] = implode(',', array_unique(array_merge(
             GeneralUtility::trimExplode(',', $params['row']['include_static_file'] ?? ''),
             $template->getTypoScriptStaticFiles()
