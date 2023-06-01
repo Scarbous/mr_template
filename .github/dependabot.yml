@@ -1,0 +1,9 @@
+
+version: 2
+updates:
+  - package-ecosystem: "composer"
+    directory: "/"
+    versioning-strategy: widen
+    open-pull-requests-limit: 5
+    schedule:
+      interval: "daily"
