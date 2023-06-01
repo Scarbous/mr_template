@@ -23,7 +23,7 @@
         "typo3/cms-core": "^10.4 || ^11"
     },
     "require-dev": {
-        "typo3/testing-framework": "6.15"
+        "typo3/testing-framework": "6.16.8"
     },
     "autoload": {
         "psr-4": {
