@@ -19,8 +19,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.3 || ^7.4 || ^8.0",
-        "typo3/cms-core": "^10.4 || ^11"
+        "php": "^7.3 || ^7.4 || ^8.0 || ^8.1 || ^8.2",
+        "typo3/cms-core": "^10.4 || ^11 || ^12"
     },
     "require-dev": {
         "typo3/testing-framework": "6.15"
